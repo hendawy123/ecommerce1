@@ -6,7 +6,8 @@ import { cookies } from "next/headers";
 export default async function getMyToken() {
 try{
   const cookieStore = await cookies();
-  const decodedToken = cookieStore.get("next-auth.session-token")?.value || cookieStore.get("ــSecure-next-auth.session-token")?.value;
+  // دعم اسم الكوكيز في localhost و production
+  const decodedToken = cookieStore.get("next-auth.session-token")?.value || cookieStore.get("__Secure-next-auth.session-token")?.value;
 
   if(!decodedToken){
     return null
