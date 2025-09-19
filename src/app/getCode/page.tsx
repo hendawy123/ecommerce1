@@ -20,8 +20,15 @@ import Link from "next/link"
 
 export default function VerifyCodePage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const email = searchParams.get('email')
+  // تغليف استخدام useSearchParams بـ Suspense
+  const [email, setEmail] = React.useState<string | null>(null)
+  const SearchParamsComponent = () => {
+    const searchParams = useSearchParams()
+    React.useEffect(() => {
+      setEmail(searchParams.get('email'))
+    }, [searchParams])
+    return null
+  }
 
   const form = useForm<VerifyCodeFormSchema>({
     resolver: zodResolver(verifyCodeSchema),
@@ -29,6 +36,14 @@ export default function VerifyCodePage() {
       resetCode: "",
     },
   })
+
+  // إضافة Suspense حول SearchParamsComponent
+  return (
+    <React.Suspense fallback={null}>
+      <SearchParamsComponent />
+      {/* ...باقي الصفحة كما هو... */}
+    </React.Suspense>
+  )
 
   async function handleVerifyCode(values: VerifyCodeFormSchema) {
     try {

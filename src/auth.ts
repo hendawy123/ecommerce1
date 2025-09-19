@@ -50,8 +50,22 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.user = token.user;
-      (session as any).token = token.token; 
+  // تأكد أن session.user يأخذ فقط بيانات المستخدم المطلوبة
+      // استخراج فقط الخصائص المطلوبة من token.user
+      // استخراج بيانات المستخدم بشكل آمن
+      // استخراج بيانات المستخدم بشكل آمن
+      let userData: any = {};
+      if (token.user && typeof token.user === "object") {
+        if ("name" in token.user && "email" in token.user && "role" in token.user) {
+          userData = token.user;
+        }
+      }
+      session.user = {
+        name: userData.name ?? "",
+        email: userData.email ?? "",
+        role: userData.role ?? ""
+      };
+      (session as any).token = token.token;
       return session;
     },
   },

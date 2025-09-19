@@ -9,7 +9,7 @@ export default async function deleteCartItem(id: string) {
   const res = await fetch(`https://ecommerce.routemisr.com/api/v1/cart/${id}`, {
     method: "DELETE",
     headers: {
-      token,
+      token: typeof token === "string" ? token : "",
       "Content-Type": "application/json",
     },
   })

@@ -20,8 +20,15 @@ import Link from "next/link"
 
 export default function ResetPasswordPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const email = searchParams.get('email')
+  // تغليف استخدام useSearchParams بـ Suspense
+  const [email, setEmail] = React.useState<string | null>(null)
+  const SearchParamsComponent = () => {
+    const searchParams = useSearchParams()
+    React.useEffect(() => {
+      setEmail(searchParams.get('email'))
+    }, [searchParams])
+    return null
+  }
 
   const form = useForm<ResetPasswordFormSchema>({
     resolver: zodResolver(resetPasswordSchema),
@@ -30,6 +37,14 @@ export default function ResetPasswordPage() {
       confirmPassword: "",
     },
   })
+
+  // إضافة Suspense حول SearchParamsComponent
+  return (
+    <React.Suspense fallback={null}>
+      <SearchParamsComponent />
+      {/* ...باقي الصفحة كما هو... */}
+    </React.Suspense>
+  )
 
   async function handleResetPassword(values: ResetPasswordFormSchema) {
     try {
