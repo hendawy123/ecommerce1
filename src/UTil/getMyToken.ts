@@ -5,13 +5,13 @@ import { cookies } from "next/headers";
 
 export default async function getMyToken() {
 try{
-  let decodedToken = (await cookies().get("next-auth.session-token"))?.value || (await cookies().get("ــSecure-next-auth.session-token"))?.value;
-
+  const cookieStore = await cookies();
+  const decodedToken = cookieStore.get("next-auth.session-token")?.value || cookieStore.get("ــSecure-next-auth.session-token")?.value;
 
   if(!decodedToken){
-return null
+    return null
   }
-  let token = await decode({
+  const token = await decode({
     token: decodedToken,
     secret: process.env.NEXTAUTH_SECRET!,
   });
@@ -19,6 +19,6 @@ return null
   return token?.token || null;
 }
 catch(err){
-return null
+  return null
 }
 }

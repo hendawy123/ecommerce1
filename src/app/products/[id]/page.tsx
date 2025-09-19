@@ -30,7 +30,7 @@ export default function ProductDetails(props: { params: Promise<{ id: string }> 
     if (!id) return;
     async function fetchData() {
       try {
-        const data = await SelectedProduct(id);
+        const data = await SelectedProduct(id ?? "");
         setProduct(data);
 
         if (data?.category?._id) {
