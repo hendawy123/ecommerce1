@@ -5,7 +5,7 @@ import getMyToken from "@/UTil/getMyToken";
 export default async function addToCart(id: string) {
   try {
     const token = await getMyToken();
-
+    console.log("🔑 Current user token:", token); // تشخيص التوكن
     if (!token) {
       throw new Error("Please login to access this feature");
     }

@@ -15,7 +15,7 @@ try{
     token: decodedToken,
     secret: process.env.NEXTAUTH_SECRET!,
   });
-
+  console.log("🔍 Decoded token:", token); // تشخيص بيانات التوكن
   return token?.token || null;
 }
 catch(err){
